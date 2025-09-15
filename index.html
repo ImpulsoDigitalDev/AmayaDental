@@ -20,6 +20,11 @@
     .nav-link:hover{ color:#fff }
     .shadow-soft{ box-shadow:0 8px 30px rgba(0,0,0,.24) }
 
+    /* Layout */
+    .section-wrap{ max-width:1200px; margin-left:auto; margin-right:auto; }
+    .card{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:16px; }
+    .glass{ backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
     /* Carrusel */
     #carousel{ position:relative; isolation:isolate; }
     .slides-track{ position:relative; width:100%; height:100%; min-height:inherit; }
@@ -37,28 +42,50 @@
     .wa-fab{ position:fixed; right:18px; bottom:18px; z-index:90; }
     .wa-fab button{ background:var(--wa); color:#08321b; }
     .wa-fab button:hover{ background:var(--wa-dark); }
-    .wa-chat{ position:fixed; right:18px; bottom:86px; width:320px; max-width:calc(100vw - 36px); z-index:95; }
+    .wa-chat{ position:fixed; right:18px; bottom:86px; width:340px; max-width:calc(100vw - 36px); z-index:95; }
     .wa-badge{ background:rgba(8,51,31,.6); color:#d1fae5; font-size:11px; padding:2px 8px; border-radius:9999px; }
-    .glass{ backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 
-    /* Inputs */
+    /* Inputs base */
     .input{
       background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
       color:#fff; border-radius:12px; padding:12px 14px; outline:none;
       transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+      width:100%;
     }
     .input::placeholder{ color:rgba(255,255,255,.55) }
     .input:focus{ border-color: #67e8f9; box-shadow:0 0 0 3px rgba(103,232,249,.15) }
-    .select{ appearance:none; background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,.8) 50%), linear-gradient(135deg, rgba(255,255,255,.8) 50%, transparent 50%); background-position: calc(100% - 16px) calc(1.1em), calc(100% - 11px) calc(1.1em); background-size:5px 5px, 5px 5px; background-repeat:no-repeat; }
 
-    /* Accessibility helpers */
-    .visually-hidden{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    /* Select legible: texto oscuro en listas del sistema */
+    .select{
+      -webkit-appearance:none; appearance:none;
+      background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,.85) 50%),
+                        linear-gradient(135deg, rgba(255,255,255,.85) 50%, transparent 50%);
+      background-position: calc(100% - 16px) calc(1.1em), calc(100% - 11px) calc(1.1em);
+      background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
+      color:#0b1220; /* color de texto oscuro para opciones desplegadas */
+      background-color:rgba(255,255,255,.92); /* campo claro para contraste */
+      border-color: rgba(255,255,255,.25);
+    }
+    .select:focus{
+      border-color:#67e8f9; box-shadow:0 0 0 3px rgba(103,232,249,.15);
+    }
+
+    /* Textareas: asegurar quiebre de palabras y espacios normales */
+    textarea.input{
+      white-space:normal; /* permite espacios y saltos automáticos */
+      overflow-wrap:break-word; /* envuelve palabras largas */
+      word-break:normal; /* respeta separación por espacios */
+      background:rgba(255,255,255,.06); color:#fff;
+    }
+
+    /* Extra: utilidad para forzar quiebre solo en casos extremos */
+    .wrap-anywhere{ white-space:normal; overflow-wrap:break-word; word-break:break-word; }
   </style>
 </head>
 <body class="antialiased">
   <!-- HEADER -->
   <header id="siteHeader" class="fixed top-0 inset-x-0 z-50 bg-[var(--brand-bg)] shadow-soft">
-    <div class="container mx-auto px-6">
+    <div class="section-wrap px-6">
       <div class="h-16 md:h-20 flex items-center justify-between gap-4">
         <a href="#hero" class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center ring-1 ring-white/15">
@@ -86,7 +113,7 @@
       </div>
     </div>
     <div id="mobileNav" class="hidden md:hidden bg-[var(--brand-nav)] border-t border-white/10">
-      <div class="container mx-auto px-6 py-3">
+      <div class="section-wrap px-6 py-3">
         <nav class="grid gap-2">
           <a href="#hero" class="nav-link py-2">Inicio</a>
           <a href="#servicios" class="nav-link py-2">Servicios</a>
@@ -102,134 +129,136 @@
   <div id="headerSpacer" aria-hidden="true"></div>
 
   <!-- HERO con carrusel -->
-  <section id="hero" class="container mx-auto px-6">
-    <div class="mt-4 rounded-2xl p-4 md:p-6 border border-white/10 shadow-soft" style="background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));">
-      <div id="carousel" class="relative overflow-hidden rounded-2xl min-h-[440px] md:min-h-[520px] lg:min-h-[600px] bg-slate-900/40">
-        <div class="slides-track">
-          <!-- Slide 1 -->
-          <article class="slide active-slide p-6 md:p-10">
-            <div class="bg-layer bg-gradient-to-br from-cyan-600 via-sky-700 to-indigo-800 pattern-dots"></div>
-            <div class="content-layer md:grid md:grid-cols-2 gap-6">
-              <div class="flex flex-col justify-center">
-                <p class="text-sm tracking-wide text-white/85">Ortodoncia</p>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-white">Brackets: instalación y mantenimiento</h2>
-                <p class="mt-3 text-white/85">Corrección dental precisa con diagnóstico y seguimiento periódico.</p>
-                <ul class="mt-3 grid grid-cols-2 gap-2 text-white/85 text-sm">
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Evaluación inicial</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Plan de tratamiento</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Ajustes periódicos</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Seguimiento</li>
-                </ul>
-                <div class="mt-5 flex flex-wrap gap-3">
-                  <a href="#servicios" class="px-5 py-3 rounded-xl bg-white text-sky-700 font-semibold hover:bg-sky-50 transition">Ver servicios</a>
-                  <a href="#contacto" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Solicitar cita</a>
+  <section id="hero" class="px-6">
+    <div class="section-wrap">
+      <div class="mt-6 md:mt-8 card rounded-2xl p-4 md:p-6 shadow-soft">
+        <div id="carousel" class="relative overflow-hidden rounded-2xl min-h-[460px] md:min-h-[520px] lg:min-h-[600px] bg-slate-900/40">
+          <div class="slides-track">
+            <!-- Slide 1 -->
+            <article class="slide active-slide p-6 md:p-10">
+              <div class="bg-layer bg-gradient-to-br from-cyan-600 via-sky-700 to-indigo-800 pattern-dots"></div>
+              <div class="content-layer md:grid md:grid-cols-2 gap-6">
+                <div class="flex flex-col justify-center max-w-xl">
+                  <p class="text-sm tracking-wide text-white/85">Ortodoncia</p>
+                  <h2 class="text-3xl md:text-4xl font-extrabold text-white">Brackets: instalación y mantenimiento</h2>
+                  <p class="mt-3 text-white/85">Corrección dental precisa con diagnóstico y seguimiento periódico.</p>
+                  <ul class="mt-3 grid grid-cols-2 gap-2 text-white/85 text-sm">
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Evaluación inicial</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Plan de tratamiento</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Ajustes periódicos</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/80 inline-block"></span>Seguimiento</li>
+                  </ul>
+                  <div class="mt-5 flex flex-wrap gap-3">
+                    <a href="#servicios" class="px-5 py-3 rounded-xl bg-white text-sky-700 font-semibold hover:bg-sky-50 transition">Ver servicios</a>
+                    <a href="#contacto" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Solicitar cita</a>
+                  </div>
+                </div>
+                <div class="relative flex items-end md:items-center justify-center">
+                  <svg class="w-full max-w-md mx-auto drop-shadow-xl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs><linearGradient id="toothGrad1" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="100%" stop-color="#dbeafe" stop-opacity="0.95"/></linearGradient></defs>
+                    <path d="M150,60c0,30-15,40-20,70-3,18-8,25-15,25-10,0-14-16-25-16s-15,16-25,16c-7,0-12-7-15-25-5-30-20-40-20-70 0-30 25-45 55-45s65,15 65,45z" fill="url(#toothGrad1)"/>
+                    <rect x="65" y="78" width="70" height="10" rx="5" fill="#0ea5e9" opacity="0.9"/>
+                    <circle cx="70" cy="83" r="6" fill="#1e293b"/>
+                    <circle cx="130" cy="83" r="6" fill="#1e293b"/>
+                  </svg>
                 </div>
               </div>
-              <div class="relative flex items-end md:items-center">
-                <svg class="w-full max-w-md mx-auto drop-shadow-xl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <defs><linearGradient id="toothGrad1" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="100%" stop-color="#dbeafe" stop-opacity="0.95"/></linearGradient></defs>
-                  <path d="M150,60c0,30-15,40-20,70-3,18-8,25-15,25-10,0-14-16-25-16s-15,16-25,16c-7,0-12-7-15-25-5-30-20-40-20-70 0-30 25-45 55-45s65,15 65,45z" fill="url(#toothGrad1)"/>
-                  <rect x="65" y="78" width="70" height="10" rx="5" fill="#0ea5e9" opacity="0.9"/>
-                  <circle cx="70" cy="83" r="6" fill="#1e293b"/>
-                  <circle cx="130" cy="83" r="6" fill="#1e293b"/>
-                </svg>
-              </div>
-            </div>
-          </article>
+            </article>
 
-          <!-- Slide 2 -->
-          <article class="slide p-6 md:p-10">
-            <div class="bg-layer bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 pattern-grid"></div>
-            <div class="content-layer md:grid md:grid-cols-2 gap-6">
-              <div class="flex flex-col justify-center">
-                <p class="text-sm tracking-wide text-white/90">Estética</p>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-white">Blanqueamiento dental</h2>
-                <p class="mt-3 text-white/90">Resultados rápidos y seguros con mínima sensibilidad.</p>
-                <ul class="mt-3 grid grid-cols-2 gap-2 text-white/90 text-sm">
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Evaluación previa</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Protocolo desensibilizante</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Resultados visibles</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Cuidados posteriores</li>
-                </ul>
-                <div class="mt-5 flex flex-wrap gap-3">
-                  <a href="#contacto" class="px-5 py-3 rounded-xl bg-white text-rose-600 font-semibold hover:bg-rose-50 transition">Reservar cita</a>
-                  <a href="#servicios" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Ver servicios</a>
+            <!-- Slide 2 -->
+            <article class="slide p-6 md:p-10">
+              <div class="bg-layer bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 pattern-grid"></div>
+              <div class="content-layer md:grid md:grid-cols-2 gap-6">
+                <div class="flex flex-col justify-center max-w-xl">
+                  <p class="text-sm tracking-wide text-white/90">Estética</p>
+                  <h2 class="text-3xl md:text-4xl font-extrabold text-white">Blanqueamiento dental</h2>
+                  <p class="mt-3 text-white/90">Resultados rápidos y seguros con mínima sensibilidad.</p>
+                  <ul class="mt-3 grid grid-cols-2 gap-2 text-white/90 text-sm">
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Evaluación previa</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Protocolo desensibilizante</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Resultados visibles</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Cuidados posteriores</li>
+                  </ul>
+                  <div class="mt-5 flex flex-wrap gap-3">
+                    <a href="#contacto" class="px-5 py-3 rounded-xl bg-white text-rose-600 font-semibold hover:bg-rose-50 transition">Reservar cita</a>
+                    <a href="#servicios" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Ver servicios</a>
+                  </div>
                 </div>
-              </div>
-              <div class="relative flex items-center">
-                <div class="w-full max-w-md mx-auto rounded-2xl p-6 bg-white/10 text-white">
-                  <h3 class="text-xl font-bold mb-2">Brillo natural</h3>
-                  <p class="text-white/85">Tratamientos seguros y personalizados para tu sonrisa.</p>
-                  <div class="mt-4 flex items-center gap-3">
-                    <i class="fa-solid fa-star text-yellow-300"></i>
-                    <span class="text-white/95">Clientes felices</span>
+                <div class="relative flex items-center justify-center">
+                  <div class="w-full max-w-md mx-auto rounded-2xl p-6 bg-white/10 text-white">
+                    <h3 class="text-xl font-bold mb-2">Brillo natural</h3>
+                    <p class="text-white/85">Tratamientos seguros y personalizados para tu sonrisa.</p>
+                    <div class="mt-4 flex items-center gap-3">
+                      <i class="fa-solid fa-star text-yellow-300"></i>
+                      <span class="text-white/95">Clientes felices</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </article>
+            </article>
 
-          <!-- Slide 3 -->
-          <article class="slide p-6 md:p-10">
-            <div class="bg-layer bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 pattern-dots"></div>
-            <div class="content-layer md:grid md:grid-cols-2 gap-6">
-              <div class="flex flex-col justify-center">
-                <p class="text-sm tracking-wide text-white/90">Higiene y estética</p>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-white">Limpieza y estética dental</h2>
-                <p class="mt-3 text-white/90">Profilaxis y pulido para recuperar el brillo y la salud de tu sonrisa.</p>
-                <ul class="mt-3 grid grid-cols-2 gap-2 text-white/90 text-sm">
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Profilaxis</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Pulido</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Consejos de cuidado</li>
-                  <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Resultados naturales</li>
-                </ul>
-                <div class="mt-5 flex flex-wrap gap-3">
-                  <a href="#contacto" class="px-5 py-3 rounded-xl bg-white text-emerald-700 font-semibold hover:bg-emerald-50 transition">Agendar limpieza</a>
-                  <a href="#servicios" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Más detalles</a>
-                </div>
-              </div>
-              <div class="relative flex items-center">
-                <div class="w-full max-w-md mx-auto grid grid-cols-2 gap-4">
-                  <div class="rounded-xl p-4 bg-white/10 text-white">
-                    <div class="text-3xl">🪥</div>
-                    <p class="mt-2 font-semibold">Profilaxis</p>
-                    <p class="text-white/80 text-sm">Limpieza profunda</p>
-                  </div>
-                  <div class="rounded-xl p-4 bg-white/10 text-white">
-                    <div class="text-3xl">✨</div>
-                    <p class="mt-2 font-semibold">Pulido</p>
-                    <p class="text-white/80 text-sm">Brillo saludable</p>
-                  </div>
-                  <div class="rounded-xl p-4 bg-white/10 text-white col-span-2">
-                    <p class="text-white/85">Carillas y diseño de sonrisa con resultados naturales.</p>
+            <!-- Slide 3 -->
+            <article class="slide p-6 md:p-10">
+              <div class="bg-layer bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 pattern-dots"></div>
+              <div class="content-layer md:grid md:grid-cols-2 gap-6">
+                <div class="flex flex-col justify-center max-w-xl">
+                  <p class="text-sm tracking-wide text-white/90">Higiene y estética</p>
+                  <h2 class="text-3xl md:text-4xl font-extrabold text-white">Limpieza y estética dental</h2>
+                  <p class="mt-3 text-white/90">Profilaxis y pulido para recuperar el brillo y la salud de tu sonrisa.</p>
+                  <ul class="mt-3 grid grid-cols-2 gap-2 text-white/90 text-sm">
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Profilaxis</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Pulido</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Consejos de cuidado</li>
+                    <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white/85 inline-block"></span>Resultados naturales</li>
+                  </ul>
+                  <div class="mt-5 flex flex-wrap gap-3">
+                    <a href="#contacto" class="px-5 py-3 rounded-xl bg-white text-emerald-700 font-semibold hover:bg-emerald-50 transition">Agendar limpieza</a>
+                    <a href="#servicios" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Más detalles</a>
                   </div>
                 </div>
+                <div class="relative flex items-center justify-center">
+                  <div class="w-full max-w-md mx-auto grid grid-cols-2 gap-4">
+                    <div class="rounded-xl p-4 bg-white/10 text-white">
+                      <div class="text-3xl">🪥</div>
+                      <p class="mt-2 font-semibold">Profilaxis</p>
+                      <p class="text-white/80 text-sm">Limpieza profunda</p>
+                    </div>
+                    <div class="rounded-xl p-4 bg-white/10 text-white">
+                      <div class="text-3xl">✨</div>
+                      <p class="mt-2 font-semibold">Pulido</p>
+                      <p class="text-white/80 text-sm">Brillo saludable</p>
+                    </div>
+                    <div class="rounded-xl p-4 bg-white/10 text-white col-span-2">
+                      <p class="text-white/85">Carillas y diseño de sonrisa con resultados naturales.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </article>
-        </div>
-
-        <!-- Flechas -->
-        <button id="prevBtn" class="tooltipped" data-tip="Anterior" aria-label="Anterior">
-          <div class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
-            <i class="fa-solid fa-arrow-left text-lg"></i>
+            </article>
           </div>
-        </button>
-        <button id="nextBtn" class="tooltipped" data-tip="Siguiente" aria-label="Siguiente">
-          <div class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
-            <i class="fa-solid fa-arrow-right text-lg"></i>
-          </div>
-        </button>
 
-        <!-- Controles inferiores -->
-        <div class="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-3 z-[60]">
-          <button id="playPause" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition" aria-label="Reproducir o Pausar">
-            <i class="fa-solid fa-pause"></i>
+          <!-- Flechas -->
+          <button id="prevBtn" aria-label="Anterior">
+            <div class="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
+              <i class="fa-solid fa-arrow-left text-lg"></i>
+            </div>
           </button>
-          <div id="dots" class="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/10"></div>
-          <div class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl text-xs bg-white/10">
-            <span class="inline-block h-2 w-2 bg-emerald-400 rounded-full animate-pulse"></span>
-            <span id="statusText" class="text-white/90">Reproducción automática</span>
+          <button id="nextBtn" aria-label="Siguiente">
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition">
+              <i class="fa-solid fa-arrow-right text-lg"></i>
+            </div>
+          </button>
+
+          <!-- Controles inferiores -->
+          <div class="absolute left-1/2 -translate-x-1/2 bottom-4 flex items-center gap-3 z-[60]">
+            <button id="playPause" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition" aria-label="Reproducir o Pausar">
+              <i class="fa-solid fa-pause"></i>
+            </button>
+            <div id="dots" class="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/10"></div>
+            <div class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl text-xs bg-white/10">
+              <span class="inline-block h-2 w-2 bg-emerald-400 rounded-full animate-pulse"></span>
+              <span id="statusText" class="text-white/90">Reproducción automática</span>
+            </div>
           </div>
         </div>
       </div>
@@ -237,140 +266,157 @@
   </section>
 
   <!-- Servicios -->
-  <section id="servicios" class="container mx-auto px-6 mt-12 md:mt-16">
-    <div class="flex items-end justify-between gap-4 mb-6">
-      <h3 class="text-2xl md:text-3xl font-bold">Servicios dentales</h3>
-      <a href="#contacto" class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--brand-accent)] text-slate-900 font-semibold hover:brightness-110 transition">
-        Reservar cita <i class="fa-solid fa-arrow-right"></i>
-      </a>
+  <section id="servicios" class="px-6 mt-12 md:mt-16">
+    <div class="section-wrap">
+      <div class="flex items-end justify-between gap-4 mb-6">
+        <h3 class="text-2xl md:text-3xl font-bold">Servicios dentales</h3>
+        <a href="#contacto" class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--brand-accent)] text-slate-900 font-semibold hover:brightness-110 transition">
+          Reservar cita <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition text-center">
+          <div class="text-3xl mb-2">🦷</div>
+          <p class="font-semibold text-white">Instalación de brackets</p>
+          <p class="text-white/80 text-sm">Diagnóstico y colocación segura.</p>
+        </div>
+        <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition text-center">
+          <div class="text-3xl mb-2">🛠️</div>
+          <p class="font-semibold text-white">Mantenimiento de brackets</p>
+          <p class="text-white/80 text-sm">Ajustes y revisiones periódicas.</p>
+        </div>
+        <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition text-center">
+          <div class="text-3xl mb-2">✨</div>
+          <p class="font-semibold text-white">Blanqueamiento dental</p>
+          <p class="text-white/80 text-sm">Resultados rápidos y seguros.</p>
+        </div>
+        <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition text-center">
+          <div class="text-3xl mb-2">🪥</div>
+          <p class="font-semibold text-white">Limpieza dental</p>
+          <p class="text-white/80 text-sm">Profilaxis profesional.</p>
+        </div>
+        <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition text-center">
+          <div class="text-3xl mb-2">🔆</div>
+          <p class="font-semibold text-white">Pulido</p>
+          <p class="text-white/80 text-sm">Brillo uniforme y saludable.</p>
+        </div>
+        <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition text-center">
+          <div class="text-3xl mb-2">😄</div>
+          <p class="font-semibold text-white">Odontología estética</p>
+          <p class="text-white/80 text-sm">Diseño de sonrisa.</p>
+        </div>
+      </div>
+      <p class="mt-4 text-white/70 text-sm text-center">...y mucho más.</p>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition">
-        <div class="text-3xl mb-2">🦷</div>
-        <p class="font-semibold text-white">Braces Installation</p>
-        <p class="text-white/80 text-sm">Instalación de brackets con diagnóstico previo.</p>
-      </div>
-      <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition">
-        <div class="text-3xl mb-2">🛠️</div>
-        <p class="font-semibold text-white">Braces Maintenance</p>
-        <p class="text-white/80 text-sm">Ajustes y revisiones periódicas.</p>
-      </div>
-      <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition">
-        <div class="text-3xl mb-2">✨</div>
-        <p class="font-semibold text-white">Teeth Whitening</p>
-        <p class="text-white/80 text-sm">Blanqueamiento seguro y rápido.</p>
-      </div>
-      <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition">
-        <div class="text-3xl mb-2">🪥</div>
-        <p class="font-semibold text-white">Dental Cleaning</p>
-        <p class="text-white/80 text-sm">Limpieza profesional.</p>
-      </div>
-      <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition">
-        <div class="text-3xl mb-2">🔆</div>
-        <p class="font-semibold text-white">Polishing</p>
-        <p class="text-white/80 text-sm">Pulido para brillo uniforme.</p>
-      </div>
-      <div class="rounded-2xl p-5 bg-white/10 hover:bg-white/15 transition">
-        <div class="text-3xl mb-2">😄</div>
-        <p class="font-semibold text-white">Cosmetic Dentistry</p>
-        <p class="text-white/80 text-sm">Estética dental personalizada.</p>
-      </div>
-    </div>
-    <p class="mt-4 text-white/70 text-sm">...y mucho más.</p>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="container mx-auto px-6 mt-12 md:mt-16">
-    <h3 class="text-2xl md:text-3xl font-bold mb-6">Preguntas frecuentes</h3>
-    <div class="space-y-3">
-      <details class="group bg-white/10 rounded-xl px-5 py-4 border border-white/10">
-        <summary class="cursor-pointer list-none flex items-center justify-between">
-          <span class="font-semibold">¿Atienden con cita previa?</span>
-          <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
-        </summary>
-        <p class="mt-2 text-white/80">Sí, recomendamos reservar para asegurar tu horario preferido.</p>
-      </details>
-      <details class="group bg-white/10 rounded-xl px-5 py-4 border border-white/10">
-        <summary class="cursor-pointer list-none flex items-center justify-between">
-          <span class="font-semibold">¿El blanqueamiento duele?</span>
-          <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
-        </summary>
-        <p class="mt-2 text-white/80">Usamos protocolos que minimizan la sensibilidad, con evaluación previa.</p>
-      </details>
-      <details class="group bg-white/10 rounded-xl px-5 py-4 border border-white/10">
-        <summary class="cursor-pointer list-none flex items-center justify-between">
-          <span class="font-semibold">¿Dónde están ubicados?</span>
-          <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
-        </summary>
-        <p class="mt-2 text-white/80">Curepe, Trinidad y Tobago. <a class="text-cyan-300 underline" target="_blank" rel="noopener" href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA">Ver en Google Maps</a></p>
-      </details>
+  <section id="faq" class="px-6 mt-12 md:mt-16">
+    <div class="section-wrap">
+      <h3 class="text-2xl md:text-3xl font-bold mb-6 text-center">Preguntas frecuentes</h3>
+      <div class="max-w-3xl mx-auto space-y-3">
+        <details class="group bg-white/10 rounded-xl px-5 py-4 border border-white/10">
+          <summary class="cursor-pointer list-none flex items-center justify-between">
+            <span class="font-semibold">¿Atienden con cita previa?</span>
+            <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
+          </summary>
+          <p class="mt-2 text-white/80">Sí, recomendamos reservar para asegurar tu horario preferido.</p>
+        </details>
+        <details class="group bg-white/10 rounded-xl px-5 py-4 border border-white/10">
+          <summary class="cursor-pointer list-none flex items-center justify-between">
+            <span class="font-semibold">¿El blanqueamiento duele?</span>
+            <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
+          </summary>
+          <p class="mt-2 text-white/80">Usamos protocolos que minimizan la sensibilidad, con evaluación previa.</p>
+        </details>
+        <details class="group bg-white/10 rounded-xl px-5 py-4 border border-white/10">
+          <summary class="cursor-pointer list-none flex items-center justify-between">
+            <span class="font-semibold">¿Dónde están ubicados?</span>
+            <i class="fa-solid fa-chevron-down transition group-open:rotate-180"></i>
+          </summary>
+          <p class="mt-2 text-white/80">Curepe, Trinidad y Tobago. <a class="text-cyan-300 underline" target="_blank" rel="noopener" href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA">Ver en Google Maps</a></p>
+        </details>
+      </div>
     </div>
   </section>
 
-  <!-- Contacto con formulario funcional (Demo: abre WhatsApp) -->
-  <section id="contacto" class="container mx-auto px-6 mt-12 md:mt-16">
-    <div class="rounded-2xl p-6 md:p-8 bg-white/10 border border-white/10">
-      <div class="flex items-start justify-between gap-6 flex-col md:flex-row">
-        <div class="md:w-1/2">
-          <h3 class="text-2xl md:text-3xl font-bold">Contacto</h3>
-          <p class="mt-2 text-white/80">Déjanos tus datos y te escribimos. Al enviar, se abrirá WhatsApp con tu mensaje listo.</p>
-          <div class="mt-6 space-y-4">
-            <div>
-              <label for="name" class="block text-sm text-white/75 mb-1">Nombre</label>
-              <input id="name" type="text" class="input w-full" placeholder="Tu nombre" autocomplete="name">
-            </div>
-            <div>
-              <label for="phone" class="block text-sm text-white/75 mb-1">Teléfono</label>
-              <input id="phone" type="tel" class="input w-full" placeholder="+1 868 ..." autocomplete="tel">
-            </div>
-            <div>
-              <label for="reason" class="block text-sm text-white/75 mb-1">Motivo</label>
-              <select id="reason" class="input select w-full">
-                <option value="Consulta general">Consulta general</option>
-                <option value="Cita de brackets">Cita de brackets</option>
-                <option value="Blanqueamiento dental">Blanqueamiento dental</option>
-                <option value="Limpieza dental">Limpieza dental</option>
-              </select>
-            </div>
-            <div>
-              <label for="message" class="block text-sm text-white/75 mb-1">Mensaje</label>
-              <textarea id="message" rows="4" class="input w-full" placeholder="Cuéntanos brevemente..."></textarea>
-            </div>
-            <div class="flex items-center justify-between gap-3">
-              <span class="text-xs text-white/60">Demo: el envío se realiza por WhatsApp</span>
-              <button id="contactSend" class="px-4 py-2 rounded-xl bg-[var(--brand-accent)] text-slate-900 font-semibold hover:brightness-110 transition">
-                Enviar por WhatsApp
-              </button>
+  <!-- Contacto -->
+  <section id="contacto" class="px-6 mt-12 md:mt-16">
+    <div class="section-wrap">
+      <div class="card rounded-2xl p-6 md:p-8 shadow-soft">
+        <div class="flex items-start justify-between gap-10 flex-col md:flex-row">
+          <div class="md:w-1/2 max-w-xl">
+            <h3 class="text-2xl md:text-3xl font-bold text-center md:text-left">Contacto</h3>
+            <p class="mt-2 text-white/80 text-center md:text-left">Déjanos tus datos. Al enviar, se abrirá WhatsApp con tu mensaje listo.</p>
+            <div class="mt-6 space-y-4">
+              <div>
+                <label for="name" class="block text-sm text-white/75 mb-1">Nombre</label>
+                <input id="name" type="text" class="input" placeholder="Tu nombre" autocomplete="name">
+              </div>
+              <div>
+                <label for="phone" class="block text-sm text-white/75 mb-1">Teléfono</label>
+                <input id="phone" type="tel" class="input" placeholder="+1 868 ..." autocomplete="tel">
+              </div>
+              <div>
+                <label for="reason" class="block text-sm text-white/75 mb-1">Motivo</label>
+                <!-- Select con estilo claro y texto oscuro para máxima legibilidad -->
+                <select id="reason" class="input select">
+                  <option value="Instalación de brackets">Instalación de brackets</option>
+                  <option value="Mantenimiento de brackets">Mantenimiento de brackets</option>
+                  <option value="Blanqueamiento dental">Blanqueamiento dental</option>
+                  <option value="Limpieza dental">Limpieza dental</option>
+                  <option value="Pulido">Pulido</option>
+                  <option value="Odontología estética">Odontología estética</option>
+                  <option value="Carillas dentales">Carillas dentales</option>
+                  <option value="Implantes dentales">Implantes dentales</option>
+                  <option value="Ortodoncia infantil">Ortodoncia infantil</option>
+                  <option value="Control y limpieza">Control y limpieza</option>
+                  <option value="Endodoncia">Endodoncia</option>
+                  <option value="Periodoncia">Periodoncia</option>
+                  <option value="Radiografía">Radiografía</option>
+                </select>
+              </div>
+              <div>
+                <label for="message" class="block text-sm text-white/75 mb-1">Mensaje</label>
+                <!-- Textarea con quiebre garantizado -->
+                <textarea id="message" rows="4" class="input wrap-anywhere" placeholder="Cuéntanos brevemente..."></textarea>
+              </div>
+              <div class="flex items-center justify-between gap-3">
+                <span class="text-xs text-white/60">Demo: el envío se realiza por WhatsApp</span>
+                <button id="contactSend" class="px-4 py-2 rounded-xl bg-[var(--brand-accent)] text-slate-900 font-semibold hover:brightness-110 transition">
+                  Enviar por WhatsApp
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="md:w-1/2">
-          <div class="rounded-xl p-5 bg-white/5 border border-white/10">
-            <div class="grid gap-4">
-              <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-lg bg-emerald-400/20 text-emerald-200 flex items-center justify-center">
-                  <i class="fa-solid fa-user-doctor"></i>
+          <div class="md:w-1/2 w-full">
+            <div class="rounded-xl p-5 bg-white/5 border border-white/10 max-w-xl mx-auto">
+              <div class="grid gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-lg bg-emerald-400/20 text-emerald-200 flex items-center justify-center">
+                    <i class="fa-solid fa-user-doctor"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm text-white/70">Odontólogo</p>
+                    <p class="font-semibold text-white">Efraín Amaya</p>
+                  </div>
                 </div>
-                <div>
-                  <p class="text-sm text-white/70">Odontólogo</p>
-                  <p class="font-semibold text-white">Efraín Amaya</p>
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-lg bg-sky-400/20 text-sky-200 flex items-center justify-center">
+                    <i class="fa-solid fa-phone"></i>
+                  </div>
+                  <a class="font-semibold text-white hover:text-sky-200 transition-colors" href="tel:18683857706">+1 (868) 385-7706</a>
                 </div>
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-lg bg-violet-400/20 text-violet-200 flex items-center justify-center">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <a class="font-semibold text-white hover:text-violet-200 transition" href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA" target="_blank" rel="noopener">Curepe, Trinidad y Tobago</a>
+                </div>
+                <a href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA" target="_blank" rel="noopener" class="mt-2 inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition w-max">
+                  <i class="fa-solid fa-location-dot"></i><span>Cómo llegar</span>
+                </a>
               </div>
-              <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-lg bg-sky-400/20 text-sky-200 flex items-center justify-center">
-                  <i class="fa-solid fa-phone"></i>
-                </div>
-                <a class="font-semibold text-white hover:text-sky-200 transition-colors" href="tel:18683857706">+1 (868) 385-7706</a>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-lg bg-violet-400/20 text-violet-200 flex items-center justify-center">
-                  <i class="fa-solid fa-location-dot"></i>
-                </div>
-                <a class="font-semibold text-white hover:text-violet-200 transition" href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA" target="_blank" rel="noopener">Curepe, Trinidad y Tobago</a>
-              </div>
-              <a href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA" target="_blank" rel="noopener" class="mt-2 inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition w-max">
-                <i class="fa-solid fa-location-dot"></i><span>Cómo llegar</span>
-              </a>
             </div>
           </div>
         </div>
@@ -379,15 +425,17 @@
   </section>
 
   <!-- CTA -->
-  <section class="container mx-auto px-6 mt-12 md:mt-16">
-    <div class="rounded-2xl p-6 md:p-8 bg-gradient-to-br from-cyan-600 via-sky-700 to-indigo-800 relative overflow-hidden">
-      <svg class="absolute -right-10 -top-10 w-[320px] opacity-30" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#a5f3fc" d="M45.8,-64.3C58.8,-56.8,67.3,-43.5,73.1,-29C78.9,-14.5,81.9,1.3,77.2,14.1C72.5,26.9,60,36.6,47.2,48.2C34.5,59.8,21.6,73.2,7.5,79.1C-6.6,85.1,-22,83.6,-36.9,77.4C-51.8,71.2,-66.3,60.3,-73.9,45.9C-81.6,31.6,-82.3,13.7,-79.7,-2.1C-77.1,-17.9,-71.1,-31.6,-61.5,-42.4C-51.9,-53.2,-38.7,-61.1,-24.3,-68.6C-9.8,-76.1,6,-83,20.1,-80.1C34.2,-77.1,46.6,-64.3,45.8,-64.3Z"/></svg>
-      <div class="relative">
-        <h3 class="text-2xl md:text-3xl font-bold text-white">¿Listo para tu mejor sonrisa?</h3>
-        <p class="mt-2 text-white/85">Agenda una cita hoy mismo y déjanos cuidar de ti.</p>
-        <div class="mt-4 flex flex-wrap gap-3">
-          <a href="#contacto" class="px-5 py-3 rounded-xl bg-white text-sky-700 font-semibold hover:bg-sky-50 transition">Reservar ahora</a>
-          <a href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA" target="_blank" rel="noopener" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Cómo llegar</a>
+  <section class="px-6 mt-12 md:mt-16">
+    <div class="section-wrap">
+      <div class="rounded-2xl p-6 md:p-8 bg-gradient-to-br from-cyan-600 via-sky-700 to-indigo-800 relative overflow-hidden text-center">
+        <svg class="absolute -right-10 -top-10 w-[320px] opacity-30" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#a5f3fc" d="M45.8,-64.3C58.8,-56.8,67.3,-43.5,73.1,-29C78.9,-14.5,81.9,1.3,77.2,14.1C72.5,26.9,60,36.6,47.2,48.2C34.5,59.8,21.6,73.2,7.5,79.1C-6.6,85.1,-22,83.6,-36.9,77.4C-51.8,71.2,-66.3,60.3,-73.9,45.9C-81.6,31.6,-82.3,13.7,-79.7,-2.1C-77.1,-17.9,-71.1,-31.6,-61.5,-42.4C-51.9,-53.2,-38.7,-61.1,-24.3,-68.6C-9.8,-76.1,6,-83,20.1,-80.1C34.2,-77.1,46.6,-64.3,45.8,-64.3Z"/></svg>
+        <div class="relative max-w-2xl mx-auto">
+          <h3 class="text-2xl md:text-3xl font-bold text-white">¿Listo para tu mejor sonrisa?</h3>
+          <p class="mt-2 text-white/85">Agenda una cita hoy mismo y déjanos cuidar de ti.</p>
+          <div class="mt-4 flex flex-wrap gap-3 justify-center">
+            <a href="#contacto" class="px-5 py-3 rounded-xl bg-white text-sky-700 font-semibold hover:bg-sky-50 transition">Reservar ahora</a>
+            <a href="https://maps.app.goo.gl/xKPWnuFAdv1cZb2EA" target="_blank" rel="noopener" class="px-5 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">Cómo llegar</a>
+          </div>
         </div>
       </div>
     </div>
@@ -395,9 +443,9 @@
 
   <!-- Footer -->
   <footer class="border-t border-white/10 mt-6">
-    <div class="container mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-white/70">© 2025 Amaya Dental. Todos los derechos reservados.</p>
-      <p class="text-white/80">
+    <div class="section-wrap px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-white/70 text-center md:text-left">© 2025 Amaya Dental. Todos los derechos reservados.</p>
+      <p class="text-white/80 text-center md:text-right">
         Diseñado por:
         <a href="https://leonova-studio.github.io/portfolio/" target="_blank" rel="noopener" class="text-cyan-300 hover:text-cyan-200 underline">
           LEONOVA STUDIO
@@ -432,32 +480,42 @@
 
         <!-- Preguntas rápidas -->
         <div class="flex flex-wrap gap-2">
-          <button data-quick="Quiero una cita de brackets" class="px-3 py-2 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition">Cita de brackets</button>
+          <button data-quick="Quiero una cita para instalación de brackets" class="px-3 py-2 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition">Cita de brackets</button>
           <button data-quick="Me interesa blanqueamiento dental" class="px-3 py-2 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition">Blanqueamiento</button>
           <button data-quick="Deseo una limpieza dental" class="px-3 py-2 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition">Limpieza</button>
-          <button data-quick="Tengo una consulta general" class="px-3 py-2 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition">Consulta</button>
+          <button data-quick="Tengo una consulta de estética dental" class="px-3 py-2 rounded-xl bg-white/10 text-white text-sm hover:bg-white/20 transition">Estética</button>
         </div>
 
         <!-- Registro rápido -->
         <div class="rounded-xl p-3 bg-white/5 border border-white/10">
           <p class="text-xs text-white/70 mb-2">Registro rápido</p>
           <div class="grid grid-cols-2 gap-2">
-            <input id="waName" type="text" class="input w-full py-2" placeholder="Nombre">
-            <input id="waPhone" type="tel" class="input w-full py-2" placeholder="Teléfono">
-            <select id="waReason" class="input select w-full col-span-2 py-2">
+            <input id="waName" type="text" class="input py-2" placeholder="Nombre">
+            <input id="waPhone" type="tel" class="input py-2" placeholder="Teléfono">
+            <!-- Select claro y texto oscuro -->
+            <select id="waReason" class="input select col-span-2 py-2">
               <option value="">Motivo</option>
-              <option>Consulta general</option>
-              <option>Cita de brackets</option>
+              <option>Instalación de brackets</option>
+              <option>Mantenimiento de brackets</option>
               <option>Blanqueamiento dental</option>
               <option>Limpieza dental</option>
+              <option>Pulido</option>
+              <option>Odontología estética</option>
+              <option>Carillas dentales</option>
+              <option>Implantes dentales</option>
+              <option>Ortodoncia infantil</option>
+              <option>Control y limpieza</option>
+              <option>Endodoncia</option>
+              <option>Periodoncia</option>
+              <option>Radiografía</option>
             </select>
-            <input id="waDate" type="date" class="input w-full py-2" placeholder="Fecha deseada">
-            <input id="waTime" type="time" class="input w-full py-2" placeholder="Hora">
+            <input id="waDate" type="date" class="input py-2" placeholder="Fecha deseada">
+            <input id="waTime" type="time" class="input py-2" placeholder="Hora">
           </div>
         </div>
 
-        <!-- Mensaje libre -->
-        <textarea id="waMsg" class="input w-full" rows="3" placeholder="Escribe tu mensaje..."></textarea>
+        <!-- Mensaje libre con quiebre forzado -->
+        <textarea id="waMsg" class="input wrap-anywhere" rows="3" placeholder="Escribe tu mensaje..."></textarea>
 
         <div class="flex items-center justify-between gap-3">
           <span class="text-[11px] text-white/60">Al enviar, se abrirá WhatsApp con tu mensaje.</span>
@@ -600,7 +658,7 @@
         if(reason) lines.push('Motivo: ' + reason);
         if(message) lines.push('Mensaje: ' + message);
         const text = encodeURIComponent(lines.join('\n'));
-        const phoneE164 = '18683857706'; // +1 868 385-7706 sin símbolos
+        const phoneE164 = '18683857706'; // +1 868 385-7706
         const url = `https://wa.me/${phoneE164}?text=${text}`;
         window.open(url, '_blank', 'noopener');
       });
@@ -649,10 +707,9 @@
         const url = `https://wa.me/${phoneE164}?text=${text}`;
         window.open(url, '_blank', 'noopener');
 
-        // Cierre suave
         setTimeout(()=> chat.classList.add('hidden'), 300);
       });
     })();
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97fb04a4b756a407',t:'MTc1Nzk2OTY1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97fb6a86d26f7465',t:'MTc1Nzk3MzgyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
