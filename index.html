@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuba Smile Dental Studio – Clínica Odontológica</title>
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Poppins', 'ui-sans-serif', 'system-ui'],
+            body: ['Inter', 'ui-sans-serif', 'system-ui']
+          },
+          colors: {
+            brand: {
+              50: '#eefdf8',
+              100: '#d6fbf0',
+              200: '#adf6e2',
+              300: '#7aedd0',
+              400: '#44ddb9',
+              500: '#16c9a0',
+              600: '#0da485',
+              700: '#0a826a',
+              800: '#0a6756',
+              900: '#0b5648'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* Fondos por slide (bonitos y contrastados) */
+    .slide-0 {
+      background:
+        radial-gradient(1200px 600px at 10% 0%, #63d1ff40, transparent 60%),
+        radial-gradient(800px 500px at 100% 100%, #16c9a040, transparent 60%),
+        linear-gradient(135deg, #081226 0%, #0c223d 50%, #0b5648 100%);
+    }
+    .slide-1 {
+      background:
+        radial-gradient(900px 500px at 90% 10%, #ffd16633, transparent 60%),
+        radial-gradient(700px 500px at 0% 100%, #06d6a033, transparent 60%),
+        linear-gradient(135deg, #1c0b29 0%, #3f115f 50%, #6a1b9a 100%);
+    }
+    .slide-2 {
+      background:
+        radial-gradient(900px 500px at 10% 90%, #00bcd433, transparent 60%),
+        radial-gradient(700px 500px at 90% 0%, #8bc34a33, transparent 60%),
+        linear-gradient(135deg, #001a2b 0%, #003b5b 50%, #005f73 100%);
+    }
+    .slide-3 {
+      background:
+        radial-gradient(900px 500px at 80% 80%, #ff7f5033, transparent 60%),
+        radial-gradient(700px 500px at 0% 0%, #ffd16633, transparent 60%),
+        linear-gradient(135deg, #1d160f 0%, #3a2a1d 50%, #6b4423 100%);
+    }
+
+    /* Patrón decorativo siempre detrás */
+    .pattern::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20px 20px, rgba(255,255,255,0.08) 2px, transparent 2px),
+        radial-gradient(circle at 60px 60px, rgba(255,255,255,0.06) 2px, transparent 2px);
+      background-size: 80px 80px, 80px 80px;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+
+    /* Carrusel estable: el track se mueve, los slides no colapsan */
+    .carousel-track {
+      display: flex;
+      width: 400%;
+      transition: transform 600ms cubic-bezier(.2,.7,.2,1);
+      will-change: transform;
+    }
+    .carousel-track > section {
+      flex: 0 0 100%;
+      width: 100%;
+      min-width: 100%;
+      position: relative;
+      overflow: visible; /* evita recortes de contenido en móvil */
+      z-index: 1;        /* siempre por encima del patrón */
+    }
+
+    /* Altura segura y centrado del contenido */
+    .hero-slide {
+      min-height: 65vh;
+      display: grid;
+      align-items: center;
+      padding: 1.25rem;
+    }
+    @media (min-width: 640px) {
+      .hero-slide { min-height: 68vh; padding: 2rem; }
+    }
+    @media (min-width: 1024px) {
+      .hero-slide { min-height: 72vh; padding: 3.5rem; }
+    }
+
+    /* Tipografía y layout responsivos */
+    .slide-content { max-width: 48rem; position: relative; z-index: 2; }
+    .slide-title { font-size: 1.8rem; line-height: 1.2; }
+    .slide-desc  { font-size: 1rem; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    @media (max-width: 639px) {
+      .slide-content { text-align: center; margin-inline: auto; }
+      .btn-row { justify-content: center; }
+    }
+    @media (min-width: 640px) {
+      .slide-title { font-size: 2.3rem; }
+      .slide-desc  { font-size: 1.125rem; }
+      .slide-content { text-align: left; margin-inline: 0; }
+      .btn-row { justify-content: flex-start; }
+    }
+    @media (min-width: 1024px) {
+      .slide-title { font-size: 3.5rem; }
+    }
+
+    /* Animaciones suaves de entrada */
+    .fade-up { animation: fadeUp 700ms ease both; }
+    .fade-left { animation: fadeLeft 800ms ease both; }
+    .fade-delay { animation-delay: 140ms; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px);} to { opacity: 1; transform: translateY(0);} }
+    @keyframes fadeLeft { from { opacity: 0; transform: translateX(-14px);} to { opacity: 1; transform: translateX(0);} }
+
+    /* UI: cristal, etc. */
+    .glass { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); }
+    .hit { position: relative; }
+    .hit::after { content:""; position:absolute; inset:-8px; }
+    .progress { transition: width linear; }
+    .live-dot { animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse { 0%{transform:scale(1);opacity:.8}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:.8} }
+  </style>
+</head>
+<body class="bg-[#0b1220] text-white font-body antialiased">
+  <!-- Header -->
+  <header class="relative z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-br from-brand-400/70 to-brand-600/70 grid place-items-center shadow-lg">
+          <i class="fa-solid fa-tooth text-white text-base sm:text-lg"></i>
+        </div>
+        <div class="leading-tight">
+          <h1 class="font-display text-lg sm:text-2xl font-extrabold tracking-tight">Cuba Smile Dental Studio</h1>
+          <p class="text-white/70 text-[11px] sm:text-sm">Clínica Odontológica • Chaguanas</p>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center gap-4">
+        <a href="#home" class="text-white/80 hover:text-white transition">Home</a>
+        <a href="#servicios" class="text-white/80 hover:text-white transition">Servicios</a>
+        <a href="#contacto" class="text-white/80 hover:text-white transition">Contacto</a>
+        <button id="whatsFloatingOpen" class="ml-2 hit inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white px-4 py-2.5 rounded-xl shadow-lg shadow-brand-900/30 transition">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          WhatsApp
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero con Carrusel -->
+  <main id="home" class="relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div id="carouselContainer" class="relative mt-3 sm:mt-6 rounded-2xl sm:rounded-3xl overflow-hidden ring-1 ring-white/10 shadow-2xl">
+        <!-- Track -->
+        <div id="track" class="carousel-track">
+          <!-- Slide 1 -->
+          <section class="hero-slide slide-0 pattern no-select">
+            <div class="slide-content">
+              <span class="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-xs md:text-sm text-white/90 shadow">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> Atención odontológica integral
+              </span>
+              <h2 class="font-display slide-title font-extrabold leading-tight mt-4 fade-up">
+                Tu sonrisa, nuestro arte
+              </h2>
+              <p class="text-white/80 mt-3 sm:mt-5 slide-desc fade-delay fade-up">
+                Cuidado profesional con tecnología moderna y trato humano excepcional.
+              </p>
+              <div class="btn-row mt-5 fade-left">
+                <a href="#servicios" class="hit inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition">
+                  <i class="fa-solid fa-list-check"></i> Ver servicios
+                </a>
+                <button id="ctaWhats1" class="hit inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl shadow-lg shadow-brand-900/30 transition">
+                  <i class="fa-brands fa-whatsapp"></i> Agenda por WhatsApp
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 2 -->
+          <section class="hero-slide slide-1 pattern no-select">
+            <div class="slide-content">
+              <span class="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-xs md:text-sm text-white/90 shadow">
+                <i class="fa-solid fa-sparkles"></i> Limpieza profunda
+              </span>
+              <h2 class="font-display slide-title font-extrabold leading-tight mt-4 fade-up">
+                Sonrisa limpia, encías sanas
+              </h2>
+              <p class="text-white/80 mt-3 sm:mt-5 slide-desc fade-delay fade-up">
+                Eliminamos placa y sarro con ultrasonido y pulido suave.
+              </p>
+              <div class="btn-row mt-5 fade-left">
+                <a href="#servicios" class="hit inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition">
+                  <i class="fa-regular fa-circle-check"></i> Beneficios
+                </a>
+                <button id="ctaWhats2" class="hit inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition">
+                  <i class="fa-brands fa-whatsapp"></i> Cotizar por WhatsApp
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 3 -->
+          <section class="hero-slide slide-2 pattern no-select">
+            <div class="slide-content">
+              <span class="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-xs md:text-sm text-white/90 shadow">
+                <i class="fa-solid fa-teeth"></i> Ortodoncia y mantenimiento
+              </span>
+              <h2 class="font-display slide-title font-extrabold leading-tight mt-4 fade-up">
+                Alineación precisa y cómoda
+              </h2>
+              <p class="text-white/80 mt-3 sm:mt-5 slide-desc fade-delay fade-up">
+                Brackets y opciones modernas con controles periódicos.
+              </p>
+              <div class="btn-row mt-5 fade-left">
+                <a href="#servicios" class="hit inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition">
+                  <i class="fa-solid fa-book-open"></i> Más info
+                </a>
+                <button id="ctaWhats3" class="hit inline-flex items-center gap-2 bg-brand-500/90 hover:bg-brand-600 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition shadow-lg shadow-brand-900/30">
+                  <i class="fa-brands fa-whatsapp"></i> Consultar
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 4 -->
+          <section class="hero-slide slide-3 pattern no-select">
+            <div class="slide-content">
+              <span class="inline-flex items-center gap-2 glass rounded-full px-3 py-1 text-xs md:text-sm text-white/90 shadow">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Carillas Estéticas
+              </span>
+              <h2 class="font-display slide-title font-extrabold leading-tight mt-4 fade-up">
+                Diseño de sonrisa a tu medida
+              </h2>
+              <p class="text-white/80 mt-3 sm:mt-5 slide-desc fade-delay fade-up">
+                Resultados naturales y duraderos. ¡Empieza hoy!
+              </p>
+              <div class="btn-row mt-5 fade-left">
+                <a href="#servicios" class="hit inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition">
+                  <i class="fa-regular fa-image"></i> Antes y después
+                </a>
+                <button id="ctaWhats4" class="hit inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition">
+                  <i class="fa-brands fa-whatsapp"></i> Agenda evaluación
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Controles superiores -->
+        <div class="absolute top-2 sm:top-3 left-2 sm:left-3 right-2 sm:right-3 flex items-center gap-2 sm:gap-3 z-20">
+          <div id="counter" class="glass text-[11px] sm:text-xs md:text-sm px-2.5 sm:px-3 py-1 rounded-lg">
+            1 / 4
+          </div>
+          <div class="flex-1 h-1.5 rounded-full bg-white/15 overflow-hidden">
+            <div id="progress" class="progress h-full w-0 bg-emerald-400"></div>
+          </div>
+          <button id="playPause" class="hit glass rounded-lg px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm hover:bg-white/20 transition">
+            <i class="fa-solid fa-pause"></i>
+          </button>
+        </div>
+
+        <!-- Flechas -->
+        <button id="prevBtn" aria-label="Anterior" class="hit absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-30 glass rounded-2xl p-2.5 sm:p-3 text-lg sm:text-xl hover:bg-white/20 hover:scale-105 transition shadow-lg">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="nextBtn" aria-label="Siguiente" class="hit absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-30 glass rounded-2xl p-2.5 sm:p-3 text-lg sm:text-xl hover:bg-white/20 hover:scale-105 transition shadow-lg">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Dots -->
+        <div class="absolute bottom-3 sm:bottom-4 left-0 right-0 z-30 flex items-center justify-center gap-1.5 sm:gap-2">
+          <button class="dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white/80" data-index="0" aria-label="Ir al 1"></button>
+          <button class="dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white/30 hover:bg-white/70 transition" data-index="1" aria-label="Ir al 2"></button>
+          <button class="dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white/30 hover:bg-white/70 transition" data-index="2" aria-label="Ir al 3"></button>
+          <button class="dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white/30 hover:bg-white/70 transition" data-index="3" aria-label="Ir al 4"></button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Servicios -->
+  <section id="servicios" class="relative py-14 sm:py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="mb-6 sm:mb-10 text-center sm:text-left">
+        <h3 class="font-display text-2xl sm:text-4xl font-extrabold">Servicios</h3>
+        <p class="text-white/70 mt-2 text-sm sm:text-base">Odontología integral para todas tus necesidades</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div class="glass rounded-2xl p-5 sm:p-6 hover:bg-white/15 transition shadow-lg text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 w-12 h-12 rounded-xl bg-emerald-400/20 text-emerald-300 grid place-items-center mb-4">
+            <i class="fa-solid fa-tooth"></i>
+          </div>
+          <h4 class="font-semibold text-lg">Extracciones</h4>
+          <p class="text-white/70 text-sm mt-2">Exodoncias seguras y con mínimo dolor.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 sm:p-6 hover:bg-white/15 transition shadow-lg text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 w-12 h-12 rounded-xl bg-sky-400/20 text-sky-300 grid place-items-center mb-4">
+            <i class="fa-solid fa-sparkles"></i>
+          </div>
+          <h4 class="font-semibold text-lg">Limpieza profunda</h4>
+          <p class="text-white/70 text-sm mt-2">Ultrasonido y pulido para encías sanas.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 sm:p-6 hover:bg-white/15 transition shadow-lg text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 w-12 h-12 rounded-xl bg-cyan-400/20 text-cyan-300 grid place-items-center mb-4">
+            <i class="fa-solid fa-teeth"></i>
+          </div>
+          <h4 class="font-semibold text-lg">Ortodoncia y mantenimiento</h4>
+          <p class="text-white/70 text-sm mt-2">Alineación y controles periódicos.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 sm:p-6 hover:bg-white/15 transition shadow-lg text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 w-12 h-12 rounded-xl bg-amber-400/20 text-amber-300 grid place-items-center mb-4">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+          </div>
+          <h4 class="font-semibold text-lg">Reparaciones y reconstrucciones</h4>
+          <p class="text-white/70 text-sm mt-2">Resinas, incrustaciones y más.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 sm:p-6 hover:bg-white/15 transition shadow-lg text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 w-12 h-12 rounded-xl bg-rose-400/20 text-rose-300 grid place-items-center mb-4">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <h4 class="font-semibold text-lg">Cirugías</h4>
+          <p class="text-white/70 text-sm mt-2">Cordal, frenillo y encía.</p>
+        </div>
+        <div class="glass rounded-2xl p-5 sm:p-6 hover:bg-white/15 transition shadow-lg text-center sm:text-left">
+          <div class="mx-auto sm:mx-0 w-12 h-12 rounded-xl bg-purple-400/20 text-purple-300 grid place-items-center mb-4">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <h4 class="font-semibold text-lg">Carillas Estéticas y mucho más</h4>
+          <p class="text-white/70 text-sm mt-2">Diseño de sonrisa natural y duradera.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto + Citas + Ubicación -->
+  <section id="contacto" class="relative py-12 sm:py-14">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid lg:grid-cols-3 gap-6 sm:gap-8 items-start">
+        <div class="glass rounded-2xl p-5 sm:p-8 lg:col-span-1 text-center sm:text-left">
+          <h3 class="font-display text-2xl md:text-3xl font-extrabold">Contacto</h3>
+          <ul class="mt-5 space-y-3 text-white/90">
+            <li class="flex items-center justify-center sm:justify-start gap-3">
+              <i class="fa-solid fa-user-doctor text-emerald-300"></i>
+              <span>Dr. Idanny Chavez (Odontóloga registrada en Trinidad y Tobago)</span>
+            </li>
+            <li class="flex items-center justify-center sm:justify-start gap-3">
+              <i class="fa-brands fa-whatsapp text-emerald-300"></i>
+              <span>WhatsApp: <a class="underline hover:no-underline" href="https://wa.me/1868774003" target="_blank" rel="noopener">1868774003</a></span>
+            </li>
+            <li class="flex items-center justify-center sm:justify-start gap-3">
+              <i class="fa-solid fa-phone text-emerald-300"></i>
+              <span>Teléfono: <a class="underline hover:no-underline" href="tel:18684665839">18684665839</a></span>
+            </li>
+            <li class="flex items-center justify-center sm:justify-start gap-3">
+              <i class="fa-solid fa-location-dot text-emerald-300"></i>
+              <span>Ubicación: Chaguanas</span>
+            </li>
+          </ul>
+          <div class="mt-6">
+            <button id="whatsFloatingOpen2" class="hit w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white px-5 py-3 rounded-xl shadow-lg shadow-brand-900/30 transition">
+              <i class="fa-brands fa-whatsapp"></i> Escribir por WhatsApp
+            </button>
+          </div>
+        </div>
+        
+        <!-- Formulario de citas -->
+        <div class="glass rounded-2xl p-5 sm:p-8 lg:col-span-2">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <h4 class="font-display text-xl md:text-2xl font-extrabold">Solicitar cita</h4>
+            <span class="inline-flex items-center gap-2 text-xs bg-white/10 px-3 py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> Estado: Activo</span>
+          </div>
+          <p class="text-white/70 mt-2 text-xs sm:text-sm">Regístrate y te contactaremos. Demo: se abre WhatsApp con tu mensaje.</p>
+          
+          <form id="appointmentForm" class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-sm text-white/80">Nombre completo</label>
+              <input name="name" required class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" placeholder="Ej. Ana Pérez" />
+            </div>
+            <div>
+              <label class="text-sm text-white/80">Teléfono</label>
+              <input name="phone" required pattern="[0-9\-\+\s]{6,}" class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" placeholder="Ej. 18684665839" />
+            </div>
+            <div>
+              <label class="text-sm text-white/80">Servicio</label>
+              <select name="service" class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2">
+                <option>Limpieza profunda</option>
+                <option>Ortodoncia y mantenimiento</option>
+                <option>Extracciones</option>
+                <option>Reparaciones y reconstrucciones</option>
+                <option>Cirugías (cordal, frenillo, encía)</option>
+                <option>Carillas estéticas</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-sm text-white/80">Fecha preferida</label>
+              <input type="date" name="date" required class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" />
+            </div>
+            <div>
+              <label class="text-sm text-white/80">Hora preferida</label>
+              <input type="time" name="time" required class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" />
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-sm text-white/80">Notas</label>
+              <textarea name="notes" rows="3" class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" placeholder="Cuéntanos brevemente tu caso..."></textarea>
+            </div>
+            <div class="md:col-span-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="flex items-center gap-2 text-xs text-white/70">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Demo: se abrirá WhatsApp con tu solicitud.</span>
+              </div>
+              <button class="hit w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white px-5 py-2.5 rounded-xl">
+                <i class="fa-solid fa-calendar-check"></i> Solicitar cita
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Horarios + Ubicación -->
+      <div class="grid lg:grid-cols-2 gap-6 sm:gap-8 items-start mt-6 sm:mt-8">
+        <div class="glass rounded-2xl p-5 sm:p-8 text-center sm:text-left">
+          <h4 class="font-semibold text-lg">Horarios</h4>
+          <p class="text-white/70 mt-2 text-sm">Lunes a Sábado: 9:00 am – 6:00 pm</p>
+          <p class="text-white/70 text-sm">Domingos: Citas especiales</p>
+          <div class="mt-5">
+            <p class="text-white/70 text-sm">Atendemos con cita previa. Escríbenos para disponibilidad el mismo día.</p>
+          </div>
+        </div>
+        
+        <div class="glass rounded-2xl p-5 sm:p-8">
+          <div class="flex items-center justify-between">
+            <h4 class="font-semibold text-lg">Ubicación</h4>
+            <a href="https://maps.app.goo.gl/iMhvtF9G9KRHcECZ9" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-200 text-sm">
+              <i class="fa-solid fa-route"></i> Cómo llegar
+            </a>
+          </div>
+          <p class="text-white/70 text-sm mt-2">Chaguanas, Trinidad y Tobago</p>
+          <div class="mt-4">
+            <div class="relative w-full overflow-hidden rounded-xl ring-1 ring-white/10 bg-gradient-to-br from-emerald-400/10 to-sky-400/10" style="padding-top: 56.25%;">
+              <iframe
+                title="Mapa - Cuba Smile Dental Studio"
+                src="https://maps.google.com/maps?q=Chaguanas&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                class="absolute inset-0 w-full h-full"
+                style="border:0;"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                onerror="this.remove(); document.getElementById('mapFallback').classList.remove('hidden');">
+              </iframe>
+              <div id="mapFallback" class="hidden absolute inset-0 grid place-items-center text-white/70 text-sm">
+                <div class="text-center">
+                  <i class="fa-solid fa-map-location-dot text-2xl mb-2"></i>
+                  <p>No se pudo cargar el mapa.</p>
+                  <a href="https://maps.app.goo.gl/iMhvtF9G9KRHcECZ9" target="_blank" rel="noopener" class="mt-2 inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-lg">
+                    Abrir en Google Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 text-center sm:text-left">
+              <a href="https://maps.app.goo.gl/iMhvtF9G9KRHcECZ9" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg">
+                <i class="fa-solid fa-map"></i> Abrir en Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Botón flotante WhatsApp (igual que desktop) -->
+  <button id="fabWhats" aria-label="WhatsApp" class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 hit bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white rounded-full w-12 h-12 sm:w-14 sm:h-14 grid place-items-center shadow-xl">
+    <i class="fa-brands fa-whatsapp text-xl sm:text-2xl"></i>
+  </button>
+
+  <!-- Modal WhatsApp -->
+  <div id="whatsModal" class="fixed inset-0 z-50 hidden">
+    <div id="backdrop" class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute bottom-24 right-4 sm:right-6 w-[92vw] max-w-sm glass rounded-2xl shadow-2xl overflow-hidden">
+      <div class="bg-white/10 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-400/20 grid place-items-center text-emerald-300">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <div>
+            <p class="font-semibold">WhatsApp Express</p>
+            <p class="text-xs text-white/70">Respuesta rápida • Registro simple</p>
+          </div>
+        </div>
+        <button id="whatsClose" class="hit text-white/70 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="p-4 space-y-3">
+        <div>
+          <label class="text-sm text-white/80">Tu nombre</label>
+          <input id="wName" type="text" class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" placeholder="Ej. Ana Pérez" />
+        </div>
+        <div>
+          <label class="text-sm text-white/80">Servicio de interés</label>
+          <select id="wService" class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2">
+            <option value="Limpieza profunda">Limpieza profunda</option>
+            <option value="Ortodoncia y mantenimiento">Ortodoncia y mantenimiento</option>
+            <option value="Extracciones">Extracciones</option>
+            <option value="Reparaciones y reconstrucciones">Reparaciones y reconstrucciones</option>
+            <option value="Cirugías (cordal, frenillo, encía)">Cirugías (cordal, frenillo, encía)</option>
+            <option value="Carillas estéticas">Carillas estéticas</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm text-white/80">Mensaje</label>
+          <textarea id="wMsg" rows="3" class="mt-1 w-full rounded-xl bg-white/10 focus:bg-white/15 border border-white/15 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 px-3 py-2" placeholder="Escribe un mensaje..."></textarea>
+          <p class="text-[11px] text-white/60 mt-1">Se enviará por WhatsApp a nuestra línea de atención.</p>
+        </div>
+      </div>
+      <div class="px-4 py-3 bg-white/10 flex items-center justify-between">
+        <div class="text-xs text-white/70">Demo de envío a WhatsApp</div>
+        <button id="wSend" class="hit inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white px-4 py-2 rounded-xl">
+          <i class="fa-brands fa-whatsapp"></i> Enviar mensaje
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-10 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+      <p class="text-white/70 text-sm">© 2025 Cuba Smile Dental Studio</p>
+      <a href="https://leonova-studio.github.io/portfolio/" target="_blank" rel="noopener" class="text-white/80 hover:text-white text-sm underline-offset-4 hover:underline">
+        Diseñado por: LEONOVA STUDIO
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Carrusel estable y funcional
+    const track = document.getElementById('track');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counter = document.getElementById('counter');
+    const progress = document.getElementById('progress');
+    const playPause = document.getElementById('playPause');
+
+    const SLIDES = 4;
+    let index = 0;
+    let autoplay = true;
+    const DURATION = 5000;
+    let startTime = Date.now();
+    let hoverPaused = false;
+
+    function updateTransform() {
+      track.style.transform = `translateX(${-index * 100}%)`;
+      dots.forEach((d,i) => d.style.background = i === index ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.30)');
+      if (counter) counter.textContent = (index+1) + ' / ' + SLIDES;
+    }
+    function resetProgress() {
+      if (!progress) return;
+      progress.style.transitionDuration = '0ms';
+      progress.style.width = '0%';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          progress.style.transitionDuration = DURATION + 'ms';
+          progress.style.width = '100%';
+        });
+      });
+    }
+    function next() { index = (index + 1) % SLIDES; updateTransform(); resetProgress(); startTime = Date.now(); }
+    function prev() { index = (index - 1 + SLIDES) % SLIDES; updateTransform(); resetProgress(); startTime = Date.now(); }
+
+    dots.forEach(d => d.addEventListener('click', () => { index = parseInt(d.dataset.index); updateTransform(); resetProgress(); startTime = Date.now(); }));
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+    if (nextBtn) nextBtn.addEventListener('click', next);
+
+    function tick() {
+      if (autoplay && !hoverPaused) {
+        const elapsed = Date.now() - startTime;
+        if (elapsed >= DURATION) next();
+      }
+      requestAnimationFrame(tick);
+    }
+    function setPlayState(play) {
+      autoplay = play;
+      if (playPause) playPause.innerHTML = play ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+      if (play) { startTime = Date.now(); resetProgress(); }
+      else if (progress) {
+        const computed = getComputedStyle(progress).width;
+        const parentWidth = progress.parentElement.clientWidth;
+        const pct = Math.min(100, Math.max(0, (parseFloat(computed)/parentWidth)*100));
+        progress.style.transitionDuration = '0ms';
+        progress.style.width = pct + '%';
+      }
+    }
+    if (playPause) playPause.addEventListener('click', () => setPlayState(!autoplay));
+
+    const hoverArea = document.getElementById('carouselContainer');
+    if (hoverArea) {
+      hoverArea.addEventListener('mouseenter', () => { hoverPaused = true; });
+      hoverArea.addEventListener('mouseleave', () => { hoverPaused = false; if (autoplay) { startTime = Date.now(); resetProgress(); } });
+
+      // Gestos táctiles
+      let touchStartX = 0, touchDeltaX = 0;
+      hoverArea.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; touchDeltaX = 0; }, {passive:true});
+      hoverArea.addEventListener('touchmove', e => { touchDeltaX = e.touches[0].clientX - touchStartX; }, {passive:true});
+      hoverArea.addEventListener('touchend', () => {
+        const threshold = 50;
+        if (touchDeltaX > threshold) prev();
+        else if (touchDeltaX < -threshold) next();
+        touchStartX = 0; touchDeltaX = 0;
+      });
+    }
+
+    // Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') next();
+      else if (e.key === 'ArrowLeft') prev();
+      else if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); setPlayState(!autoplay); }
+    });
+
+    // Inicializar
+    updateTransform(); resetProgress(); requestAnimationFrame(tick);
+
+    // WhatsApp modal
+    const openers = [
+      document.getElementById('fabWhats'),
+      document.getElementById('whatsFloatingOpen'),
+      document.getElementById('whatsFloatingOpen2'),
+      document.getElementById('ctaWhats1'),
+      document.getElementById('ctaWhats2'),
+      document.getElementById('ctaWhats3'),
+      document.getElementById('ctaWhats4'),
+    ].filter(Boolean);
+
+    const modal = document.getElementById('whatsModal');
+    const backdrop = document.getElementById('backdrop');
+    const closeBtn = document.getElementById('whatsClose');
+
+    function openModal() {
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      setTimeout(() => { const nm = document.getElementById('wName'); if (nm) nm.focus(); }, 50);
+    }
+    function closeModal() { if (modal) modal.classList.add('hidden'); }
+
+    openers.forEach(btn => btn.addEventListener('click', openModal));
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal(); });
+
+    // Preguntas rápidas
+    const msgArea = document.getElementById('wMsg');
+    document.querySelectorAll('.qbtn').forEach(b => b.addEventListener('click', () => {
+      const q = b.getAttribute('data-q');
+      if (msgArea) {
+        msgArea.value = msgArea.value ? (msgArea.value + '\n' + q) : q;
+        msgArea.focus();
+      }
+    }));
+
+    // Envío WhatsApp rápido (Demo)
+    const wSend = document.getElementById('wSend');
+    if (wSend) {
+      wSend.addEventListener('click', () => {
+        const name = (document.getElementById('wName')?.value || '').trim();
+        const service = document.getElementById('wService')?.value || '';
+        const message = (document.getElementById('wMsg')?.value || '').trim();
+        const lines = ['Hola, me gustaría más información.'];
+        if (name) lines.push('Nombre: ' + name);
+        if (service) lines.push('Servicio: ' + service);
+        if (message) lines.push('Mensaje: ' + message);
+        const finalMsg = encodeURIComponent(lines.join('\n'));
+        const phone = '18684959195';
+        const url = `https://wa.me/${phone}?text=${finalMsg}`;
+        window.open(url, '_blank', 'noopener');
+      });
+    }
+
+    // Envío formulario cita (Demo a WhatsApp)
+    const apptForm = document.getElementById('appointmentForm');
+    if (apptForm) {
+      apptForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(apptForm).entries());
+        const lines = [
+          'Nueva solicitud de cita',
+          'Nombre: ' + (data.name || ''),
+          'Teléfono: ' + (data.phone || ''),
+          'Servicio: ' + (data.service || ''),
+          'Fecha: ' + (data.date || ''),
+          'Hora: ' + (data.time || '')
+        ];
+        if (data.notes) lines.push('Notas: ' + data.notes);
+        const msg = encodeURIComponent(lines.join('\n'));
+        const phone = '18684959195';
+        window.open(`https://wa.me/${phone}?text=${msg}`, '_blank', 'noopener');
+      });
+    }
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f8e32bb2e6b1d7',t:'MTc1Nzk0NzMxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
